@@ -26,147 +26,6 @@ Energy_Liveness float,
 most_played_on varchar(100)
 );
 
-select * from spotify
-select track,
-max(energy_liveness) as high_energy
-from spotify
-group by 1
-order by 2 
-limit 5
-
-select count(*) from spotify
-
-select * from spotify
-
-select track
-from spotify
-where stream > 1000000000
-
-
-select distinct album,artist
-from spotify
-order by 1
-
-select sum(comments) as total_coments
-from spotify
-where licensed = 'true'
-
-select * from spotify
-where album_type ilike 'single'
-
-select track,
-artist,
-count(track) as total_tracks
-from spotify
-group by 1,2
-order by 3 desc
-
-select album,
-track,
-avg(danceability) as avgreage_danceability
-from spotify
-group by 1,2
-
-order by 3 desc
-
-select * from spotify
-
-select track,
-sum(views) as total_views,
-sum(likes) as total_likes
-from spotify
-where official_video =  'true'
-group by 1
-order by 2 desc
-
-
-select * from spotify
-
-select * from
-(select track, 
-coalesce(sum(case when most_played_on = 'youtube' then stream end),0) as streamed_youtube,
-coalesce(sum(case when most_played_on = 'spotify' then stream end),0) as streamed_spotify
-from spotify
-group by 1) as t1
-
-where streamed_spotify > streamed_youtube
-and streamed_youtube <> 0
-
-
-
-select artist, track
-from
-(select artist, track,
-sum(views) as total_views,
-dense_rank() over (partition by artist order by sum(views) desc) as ranking
-from spotify
-group by 1,2 
-order by 3 desc
-limit 3) as t1
-where ranking = 3
-
-
-WITH ranking_artits
-as
-(select artist, track,
-sum(views) as total_views,
-dense_rank() over (partition by artist order by sum(views) desc) as ranking
-from spotify
-group by 1,2
-order by 1,3) 
-select * from ranking_artits
-where ranking <= 3
-
-select * from spotify
-
-select track,
-avg(liveness) as avg_liveness
-from spotify
-group by 1 
-order by 1 desc
-
-
-select * from spotify
-where liveness >0.19
-
-select track, track,liveness
-from spotify
-where liveness > (select avg(liveness) from spotify)
-
-select * from spotify
-
-select track,energy_liveness
-from spotify
-where energy_liveness > 1.2
-
-select * from spotify
-with ranking_track
-as
-(select track,views,
-sum(likes) as total_likes,
-dense_rank() over (partition by track order by views ) as ranking
-from spotify
-group by 1,2)
-
-select * from ranking_track
-where ranking = 1
-
-select * from spotify
-
-with cts
-as
-(select album, track,
-max(energy) as high_energy,
-min(energy) as low_energy
-from spotify
-group by 1,2
-)
-select album,
- high_energy - low_energy as energy_difrence
- from cts
- order by 2 desc
-
-
 ## Project Steps
 
 ### 1. Data Exploration
@@ -313,11 +172,6 @@ high_liveness - min_livenes as diffrence
 from track
 order by 2 desc
 
-
-
-
-
-
 ```sql
 WITH cte
 AS
@@ -407,3 +261,4 @@ If you would like to contribute to this project, feel free to fork the repositor
 
 ## License
 This project is licensed under the MIT License.
+
